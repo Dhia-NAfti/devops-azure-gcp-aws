@@ -21,13 +21,20 @@ jobs:
 
       matrix:
         include:
+          # Microsoft Azure
           - cloud: Azure
             python-version: "3.11"
-            install-command: make install
+            install-command: make install-azure
 
+          # Google Cloud Platform
           - cloud: Google Cloud
             python-version: "3.12"
             install-command: make install-gcp
+
+          # Amazon Web Services
+          - cloud: AWS
+            python-version: "3.13"
+            install-command: make install-aws
 
     steps:
       - name: Checkout repository
@@ -38,8 +45,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Display Python version
-        run: python --version
+      - name: Display environment
+        run: |
+          echo "Cloud profile: ${{ matrix.cloud }}"
+          python --version
+          python -m pip --version
 
       - name: Install dependencies
         run: ${{ matrix.install-command }}

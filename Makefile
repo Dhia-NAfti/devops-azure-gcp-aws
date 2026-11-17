@@ -1,20 +1,24 @@
 
-# Common dependencies
+# Common Python dependencies
 install:
-	pip install --upgrade pip
-	pip install -r requirements.txt
+	python -m pip install --upgrade pip
+	python -m pip install -r requirements.txt
 
-# Google Cloud dependencies
+# Microsoft Azure profile
+install-azure: install
+	@echo "Installing Azure dependencies"
+
+# Google Cloud profile
 install-gcp: install
-	pip install -r requirements-gcp.txt
+	python -m pip install -r requirements-gcp.txt
 
-# AWS dependencies
+# Amazon Web Services profile
 install-aws: install
-	pip install -r requirements-aws.txt
+	python -m pip install -r requirements-aws.txt
 
 # Code quality
 lint:
-	pylint --disable=R,C hello.py
+	python -m pylint --disable=R,C hello.py
 
 # Automated tests
 test:
@@ -23,11 +27,12 @@ test:
 # General CI
 all: install lint test
 
-# GCP CI
+# Cloud-specific CI
+all-azure: install-azure lint test
+
 all-gcp: install-gcp lint test
 
-# AWS CI
 all-aws: install-aws lint test
 
-.PHONY: install install-gcp install-aws lint test all all-gcp all-aws
+.PHONY: install install-azure install-gcp install-aws lint test all all-azure all-gcp all-aws
 
