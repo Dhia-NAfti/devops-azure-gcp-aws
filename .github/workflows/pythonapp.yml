@@ -4,17 +4,30 @@ name: Multi-Cloud Continuous Integration
 on:
   push:
     branches: [main]
+
   pull_request:
     branches: [main]
+
   workflow_dispatch:
 
 jobs:
   build:
+    name: ${{ matrix.cloud }} - Python ${{ matrix.python-version }}
+
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
+
       matrix:
-        python-version: ["3.11", "3.12"]
+        include:
+          - cloud: Azure
+            python-version: "3.11"
+            install-command: make install
+
+          - cloud: Google Cloud
+            python-version: "3.12"
+            install-command: make install-gcp
 
     steps:
       - name: Checkout repository
@@ -25,11 +38,15 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Display Python version
+        run: python --version
+
       - name: Install dependencies
-        run: make install
+        run: ${{ matrix.install-command }}
 
       - name: Lint Python code
         run: make lint
 
-      - name: Run tests
+      - name: Run automated tests
         run: make test
+
