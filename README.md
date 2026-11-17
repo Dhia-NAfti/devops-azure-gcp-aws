@@ -1,3 +1,5 @@
+[![Multi-Cloud Continuous Integration](https://github.com/Dhia-NAfti/devops-azure-gcp-aws/actions/workflows/pythonapp.yml/badge.svg)](https://github.com/Dhia-NAfti/devops-azure-gcp-aws/actions/workflows/pythonapp.yml)
+
 
 # Multi-Cloud Continuous Integration
 
